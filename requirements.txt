@@ -1,0 +1,11 @@
+# Agent Tools
+pydantic
+beautifulsoup4
+requests
+duckduckgo_search
+
+# Ell
+ell-ai
+
+# Other
+python-dotenv
