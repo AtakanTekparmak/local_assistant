@@ -1,6 +1,6 @@
 import ell
 from src.config import MODEL_NAME, TOOLS_PATH
-from src.utils import load_system_prompt, create_functions_schema
+from src.utils import load_system_prompt, create_functions_schema, load_fewshot
 from src.engine import FunctionCallingEngine
 import openai
 from src.config import API_KEY, BASE_URL
@@ -23,9 +23,10 @@ class OpenAIClient:
 # Initialize the engine
 ENGINE = FunctionCallingEngine()
 ENGINE.add_functions_from_file(TOOLS_PATH)
-
-# Load system prompt
+ 
+# Load system prompt and fewshot examples
 SYSTEM_PROMPT = load_system_prompt(create_functions_schema(ENGINE.functions))
+FEWSHOT = load_fewshot()
 
 @ell.complex(
         model=MODEL_NAME, 
@@ -35,4 +36,6 @@ SYSTEM_PROMPT = load_system_prompt(create_functions_schema(ENGINE.functions))
 def ai_assistant(message_history: list[ell.Message]):
     return [
         ell.system(SYSTEM_PROMPT),
+        ell.user(FEWSHOT[0]["content"]),
+        ell.assistant(FEWSHOT[1]["content"])
     ] + message_history

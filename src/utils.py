@@ -2,7 +2,7 @@ import json
 from typing import Dict, Callable, Tuple
 import inspect
 from typing import Any
-from src.config import SYSTEM_PROMPT_PATH
+from src.config import SYSTEM_PROMPT_PATH, FEWSHOT_PATH
 
 def create_functions_schema(functions: Dict[str, Callable]) -> str:
     """
@@ -48,6 +48,30 @@ def load_system_prompt(
         print(f"Error: File not found at {file_path}")
         return ""
     
+def load_fewshot(
+        file_path: str = FEWSHOT_PATH
+    ) -> str:
+    """
+    Loads the fewshot from the specified file.
+    """
+    try:
+        with open(file_path, "r") as file:
+            file_content = json.load(file)
+            
+            assert isinstance(file_content, list), "Fewshot must be a list of messages"
+            assert len(file_content) > 0, "Fewshot must not be empty"
+            assert isinstance(file_content[0], dict), "Fewshot must be a list of dictionaries"
+            assert "role" in file_content[0] and "content" in file_content[0], "Fewshot must be a list of dictionaries with 'role' and 'content' keys"
+            assert file_content[0]["role"] == "user" and file_content[1]["role"] == "assistant", "Fewshot must be a list of dictionaries with 'role' key as 'user' or 'assistant'"
+            
+            return file_content
+    except FileNotFoundError:
+        print(f"Error: File not found at {file_path}")
+        return ""
+    except json.JSONDecodeError:
+        print(f"Error: Failed to decode JSON from {file_path}")
+        return ""
+    
 def parse_model_response(content: str) -> Tuple[str, bool]:
     """
     Parses the model response to get the 
@@ -70,16 +94,7 @@ def parse_model_response(content: str) -> Tuple[str, bool]:
             between_tags = content.split("<|function_calls|>")[1]
             if "<|end_function_calls|>" in between_tags:
                 between_tags = between_tags.split("<|end_function_calls|>")[0]
-            return json.loads(between_tags), True
-        elif "<|answer|>" in content:
-            answer = content.split("<|answer|>")[1]
-            answer = answer.split("<|end_answer|>")[0] if "<|end_answer|>" in answer else answer
-
-            # If there are thoughts after the answer, cut them
-            if "<|thoughts|>" in answer:
-                answer = answer.split("<|thoughts|>")[0]
-                
-            return answer.strip(), False
+            return between_tags, True
         else:
             return content, False
     except json.JSONDecodeError:
