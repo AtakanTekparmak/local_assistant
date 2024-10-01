@@ -83,12 +83,9 @@ def parse_model_response(content: str) -> Tuple[str, bool]:
     Returns:
         Tuple[str, bool]: The assistant's response and/or function calls.
     """
-    if "<|function_calls|>" in content:
-        between_tags = content.split("<|function_calls|>")[1].split("<|end_function_calls|>")[0]
 
-        if "```python" in between_tags:
-            between_tags = between_tags.split("```python")[1].split("```")[0]
-
-        return between_tags.strip(), True
+    if "```python" in content:
+        content = content.split("```python")[1].split("```")[0]
+        return content.strip(), True
     else:
         return content, False

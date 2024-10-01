@@ -8,8 +8,7 @@ You can use Python code freely, including the following available functions:
 <|end_functions_schema|>
 
 Think step by step and provide your reasoning, outside of the function calls.
-You can write Python code and use the available functions. Put your Python code 
-between <|function_calls|> and <|end_function_calls|> tags. The multi-turn conversation 
+You can write Python code and use the available functions. The multi-turn conversation 
 between you and the user starts now. The user will provide you with the 
 results of the code execution, in between <|function_results|> and <|end_function_results|> 
 tags and you will answer as if you were directly answering the user, don't mention 
