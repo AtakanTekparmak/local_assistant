@@ -1,7 +1,7 @@
 from typing import List, Tuple, Any, Dict
 import ell
 from src.model import ai_assistant, SYSTEM_PROMPT, ENGINE
-from src.utils import parse_model_response, parse_function_calls
+from src.utils import parse_model_response
 
 class Assistant:
     """
@@ -21,7 +21,7 @@ class Assistant:
             cls._instance = cls()
         return cls._instance
 
-    def process_message(self, user_input: str) -> Tuple[str, List[Dict[str, Any]]]:
+    def process_message(self, user_input: str) -> Tuple[str, Dict[str, Any]]:
         """
         Process a message from the user
         in the multi-turn conversation.
@@ -30,30 +30,24 @@ class Assistant:
             user_input (str): The user's input.
 
         Returns:
-            str: The assistant's response.
+            Tuple[str, Dict[str, Any]]: The assistant's response and execution results.
         """
         self.message_history.append(ell.user(user_input))
         response = ai_assistant(self.message_history).content[0].text
         
-        # Get the assistant message and append it to the message history
         self.message_history.append(ell.assistant(response))
 
-        # For debugging
-        # print(f"~~ Assistant response: {response}")
-
-        # If the assistant message has tool calls,
-        # Parse function calls or assistant response from model response
-        assistant_response, success = parse_model_response(response)
+        assistant_response, has_function_calls = parse_model_response(response)
         
-        if success: 
-            function_calls = parse_function_calls(assistant_response)
-            results = self.engine.call_functions(function_calls)
+        if has_function_calls:
+            results = self.engine.execute_code(assistant_response)
             self.message_history.append(ell.user(f"<|function_results|>\n{results}\n<|end_function_results|>"))
             final_response = ai_assistant(self.message_history).content[0].text
             self.message_history.append(ell.assistant(final_response))
-            return final_response, assistant_response
+            return final_response, results
         else:
-            return assistant_response, None
+            return assistant_response, {}
 
     def reset_conversation(self):
         self.message_history = []
+        self.engine.reset_session()

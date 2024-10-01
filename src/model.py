@@ -1,7 +1,7 @@
 import ell
 from src.config import MODEL_NAME, TOOLS_PATH
 from src.utils import load_system_prompt, create_functions_schema, load_fewshot
-from src.engine import FunctionCallingEngine
+from src.engine import ENGINE
 import openai
 from src.config import API_KEY, BASE_URL
 
@@ -20,12 +20,11 @@ class OpenAIClient:
             )
         return cls._instance
 
-# Initialize the engine
-ENGINE = FunctionCallingEngine()
+# Add functions from file
 ENGINE.add_functions_from_file(TOOLS_PATH)
  
 # Load system prompt and fewshot examples
-SYSTEM_PROMPT = load_system_prompt(create_functions_schema(ENGINE.functions))
+SYSTEM_PROMPT = load_system_prompt(create_functions_schema(ENGINE.globals))
 FEWSHOT = load_fewshot()
 
 @ell.complex(
