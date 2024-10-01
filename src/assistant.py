@@ -1,8 +1,7 @@
 from typing import List, Tuple, Any, Dict
 import ell
-from src.model import ai_assistant, SYSTEM_PROMPT
-from src.engine import ToolCallingEngine
-from src.utils import parse_model_response
+from src.model import ai_assistant, SYSTEM_PROMPT, ENGINE
+from src.utils import parse_model_response, parse_function_calls
 
 class Assistant:
     """
@@ -14,7 +13,7 @@ class Assistant:
         self.message_history: List[ell.Message] = [
             ell.system(SYSTEM_PROMPT)
         ]
-        self.engine = ToolCallingEngine.get_instance()
+        self.engine = ENGINE
 
     @classmethod
     def get_instance(cls):
@@ -44,7 +43,8 @@ class Assistant:
         assistant_response, success = parse_model_response(response)
         
         if success: 
-            results = self.engine.parse_and_call_functions(assistant_response)
+            function_calls = parse_function_calls(assistant_response)
+            results = self.engine.call_functions(function_calls)
             self.message_history.append(ell.user(f"<|function_results|>\n{results}\n<|end_function_results|>"))
             final_response = ai_assistant(self.message_history).content[0].text
             self.message_history.append(ell.assistant(final_response))
