@@ -14,8 +14,8 @@ def main():
             break
         
         response, function_calls = assistant.process_message(user_input)
-        print(f"Function Calls:\n{function_calls}")
-        print(f"Assistant:\n{response}")
+        print(f"\nFunction Calls:\n{function_calls}")
+        print(f"\nAssistant:\n{response}\n")
 
 if __name__ == "__main__":
     main()

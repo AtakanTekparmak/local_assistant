@@ -1,11 +1,11 @@
 # Agent Tools
-pydantic
-beautifulsoup4
-requests
-duckduckgo_search
+pydantic==2.9.2
+beautifulsoup4==4.12.3
+requests==2.32.3
+duckduckgo_search==6.2.13
 
 # Ell
-ell-ai
+ell-ai==0.0.12
 
 # Other
-python-dotenv
+python-dotenv==1.0.1

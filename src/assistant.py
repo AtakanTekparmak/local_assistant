@@ -38,6 +38,9 @@ class Assistant:
         # Get the assistant message and append it to the message history
         self.message_history.append(ell.assistant(response))
 
+        # For debugging
+        # print(f"~~ Assistant response: {response}")
+
         # If the assistant message has tool calls,
         # Parse function calls or assistant response from model response
         assistant_response, success = parse_model_response(response)

@@ -17,6 +17,13 @@ def web_search(
     ) -> list[SearchResult]:
     """
     Search the web using DuckDuckGo Search (DDGS) and return the results.
+
+    Args:
+        query (str): The search query.
+        max_results (int, optional): The maximum number of results to return. Defaults to WEB_SEARCH_MAX_RESULTS.
+
+    Returns:
+        list[SearchResult]: A list of search results.
     """
     results_list = DDGS().text(
         keywords=query,

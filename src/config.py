@@ -2,7 +2,7 @@
 MODEL_NAME = "lmstudio-community/Phi-3.5-mini-instruct-GGUF/Phi-3.5-mini-instruct-Q8_0.gguf"
 BASE_URL = "http://192.168.68.58:1234/v1"
 API_KEY = "test"    
-SYSTEM_PROMPT_PATH = "src/static/test_prompt.txt"
+SYSTEM_PROMPT_PATH = "src/static/system_prompt.txt"
 FEWSHOT_PATH = "src/static/fewshot.json"
 WELCOME_MESSAGE = """
 Welcome to KantoorBot!
