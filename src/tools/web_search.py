@@ -14,7 +14,7 @@ class SearchResult(BaseModel):
 def web_search(
         query: str,
         max_results: int = WEB_SEARCH_MAX_RESULTS
-    ) -> list[SearchResult]:
+    ) -> str:
     """
     Search the web using DuckDuckGo Search (DDGS) and return the results.
 
@@ -29,4 +29,13 @@ def web_search(
         keywords=query,
         max_results=max_results 
     )
-    return [SearchResult(**result) for result in results_list]
+
+    search_results = [SearchResult(**result) for result in results_list]
+    
+    # Format the search results as a string
+    formatted_results = []
+    for result in search_results:
+        formatted_result = result.title + "\n" + result.href + "\n" + result.body + "\n"
+        formatted_results.append(formatted_result)
+
+    return "~~~~~~~~~~~~~~~~~".join(formatted_results)

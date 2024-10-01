@@ -11,6 +11,6 @@ Type 'exit()' or 'quit()' to end the conversation.
 """
 
 # Tools
-WEB_SEARCH_MAX_RESULTS = 5
+WEB_SEARCH_MAX_RESULTS = 3
 TOOLS_PATH = "src/tools/__init__.py"
 OUTPUT_FOLDER = "output"
