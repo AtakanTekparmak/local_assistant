@@ -37,6 +37,6 @@ def get_weather(city: str) -> str:
             condition = condition_element.text
             return f"The current weather in {city} is {condition} with a temperature of {temperature}°C"
         else:
-            return "Weather information not found"
+            return f"Weather information not found for {city}"
     else:
         return f"Failed to retrieve the webpage. Status code: {response.status_code}"
