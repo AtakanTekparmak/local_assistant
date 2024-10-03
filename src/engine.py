@@ -23,6 +23,10 @@ class PythonInterpreter:
         self.globals: Dict[str, Any] = {}
         self.locals: Dict[str, Any] = {}
         self.functions: Dict[str, callable] = {}
+        self.output_dir = "output"
+        
+        # Create the output directory if it doesn't exist
+        os.makedirs(self.output_dir, exist_ok=True)
 
     def add_functions(self, functions: Dict[str, callable]) -> None:
         """
@@ -55,7 +59,7 @@ class PythonInterpreter:
 
     def execute_code(self, code: str) -> Dict[str, Any]:
         """
-        Execute Python code and return the updated local variables.
+        Execute Python code in the output directory and return the updated local variables.
 
         Args:
             code (str): The Python code to execute.
@@ -64,9 +68,19 @@ class PythonInterpreter:
             Dict[str, Any]: The updated local variables.
         """
         try:
+            # Change the working directory to the output directory
+            original_dir = os.getcwd()
+            os.chdir(self.output_dir)
+            
             exec(code, self.globals, self.locals)
+            
+            # Change back to the original directory
+            os.chdir(original_dir)
+            
             return self.locals
         except Exception as e:
+            # Ensure we change back to the original directory even if an error occurs
+            os.chdir(original_dir)
             return {"error": str(e), "traceback": traceback.format_exc()}
 
     def reset_session(self) -> None:
