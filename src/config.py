@@ -1,5 +1,5 @@
 # General
-MODEL_NAME = "lmstudio-community/Qwen2.5-Coder-7B-Instruct-GGUF/Qwen2.5-Coder-7B-Instruct-Q4_K_M.gguf"
+MODEL_NAME = "qwen2.5-coder-7b-instruct"
 BASE_URL = "http://192.168.68.58:1234/v1"
 API_KEY = "test"    
 SYSTEM_PROMPT_PATH = "src/static/system_prompt.txt"
