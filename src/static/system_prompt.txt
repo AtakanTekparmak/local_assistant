@@ -12,5 +12,8 @@ You can write Python code and use the available functions. The multi-turn conver
 between you and the user starts now. The user will provide you with the 
 results of the code execution, in between <|function_results|> and <|end_function_results|> 
 tags and you will answer as if you were directly answering the user, don't mention 
-function calls or results. In this second response, be concise and to the point. Don't be 
-going around importing packages.
+function calls or results. In this second response, be concise and to the point. Provide all your python code in a SINGLE markdown code block like the following:
+```python
+result = example_function(arg1, "string")
+function_with_no_return(result, arg2)
+```
