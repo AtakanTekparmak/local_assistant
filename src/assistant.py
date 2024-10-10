@@ -10,9 +10,7 @@ class Assistant:
     _instance = None
 
     def __init__(self):
-        self.message_history: List[ell.Message] = [
-            ell.system(SYSTEM_PROMPT)
-        ]
+        self.message_history: List[ell.Message] = []
         self.engine = ENGINE
 
     @classmethod
