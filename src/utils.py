@@ -2,7 +2,9 @@ import json
 from typing import Dict, Callable, Tuple
 import inspect
 from typing import Any
-from src.config import SYSTEM_PROMPT_PATH, FEWSHOT_PATH
+import requests
+
+from src.config import SYSTEM_PROMPT_PATH, FEWSHOT_PATH, BASE_URL, MODEL_NAME
 
 def create_functions_schema(functions: Dict[str, Callable]) -> str:
     """
@@ -89,3 +91,25 @@ def parse_model_response(content: str) -> Tuple[str, bool]:
         return content.strip(), True
     else:
         return content, False
+
+def is_server_running() -> bool:
+    """
+    Checks if the server is running.
+    """
+    def search_model(model_name: str, data: Dict[str, Any]) -> bool:
+        """
+        Searches for the model name 
+        in the server's GET /models 
+        response.
+        """
+        for model in data["data"]:
+            if model["id"] == model_name:
+                return True
+        return False
+
+    try:
+        response = requests.get(f"{BASE_URL}/models/")
+        data = response.json()
+        return search_model(MODEL_NAME, data)
+    except requests.RequestException:
+        return False

@@ -5,7 +5,7 @@ API_KEY = "test"
 SYSTEM_PROMPT_PATH = "src/static/system_prompt.txt"
 FEWSHOT_PATH = "src/static/fewshot.json"
 WELCOME_MESSAGE = """
-Welcome to KantoorBot!
+Welcome to your local AI assistant!
 
 Type 'exit()' or 'quit()' to end the conversation.
 """
